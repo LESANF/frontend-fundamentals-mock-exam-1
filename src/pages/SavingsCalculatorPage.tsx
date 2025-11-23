@@ -13,6 +13,7 @@ export function SavingsCalculatorPage() {
   const [monthlyAmount, setMonthlyAmount] = useState<number | null>(null);
   const [term, setTerm] = useState<number | null>(12);
   const [activeTab, setActiveTab] = useState<'products' | 'results'>('products');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const { data, isLoading } = useGetSavingsProducts();
 
@@ -26,7 +27,7 @@ export function SavingsCalculatorPage() {
       const matchesMonthly =
         monthlyAmount === null
           ? true
-          : monthlyAmount >= product.minMonthlyAmount && monthlyAmount <= product.maxMonthlyAmount;
+          : monthlyAmount > product.minMonthlyAmount && monthlyAmount < product.maxMonthlyAmount;
 
       return matchesTerm && matchesMonthly;
     });
@@ -61,7 +62,12 @@ export function SavingsCalculatorPage() {
       </Tab>
 
       {activeTab === 'products' ? (
-        <ProductList products={filteredProducts} isLoading={isLoading} />
+        <ProductList
+          products={filteredProducts}
+          isLoading={isLoading}
+          selectedProductId={selectedProductId}
+          onSelect={setSelectedProductId}
+        />
       ) : (
         <ListRow contents={<ListRow.Texts type="1RowTypeA" top="계산 결과는 준비 중입니다." />} />
       )}
