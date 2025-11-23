@@ -4,46 +4,31 @@ import Header from '@components/Header';
 import Meta from '@components/Meta';
 import { CalculationResult, InputSection, ProductList } from '@components/Savings';
 import { useGetSavingsProducts } from 'api/queries';
+import { useSavingsCalculator } from '@hooks/useSavingsCalculator';
 import { Border, Spacing, Tab } from 'tosslib';
 
 export function SavingsCalculatorPage() {
   const openGraphImageUrl = new URL(`${import.meta.env.BASE_URL}toss-og-image.png`, window.location.origin).href;
 
-  const [targetAmount, setTargetAmount] = useState<number | null>(null);
-  const [monthlyAmount, setMonthlyAmount] = useState<number | null>(null);
-  const [term, setTerm] = useState<number | null>(12);
+  const { data: savingsProducts, isLoading } = useGetSavingsProducts();
   const [activeTab, setActiveTab] = useState<'products' | 'results'>('products');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
-  const { data, isLoading } = useGetSavingsProducts();
+  const {
+    targetAmount,
+    setTargetAmount,
+    monthlyAmount,
+    setMonthlyAmount,
+    term,
+    setTerm,
+    filteredProducts,
+    recommendedProducts,
+  } = useSavingsCalculator(savingsProducts);
 
   const selectedProduct = useMemo(
-    () => data?.find(product => product.id === selectedProductId) ?? null,
-    [data, selectedProductId]
+    () => savingsProducts?.find(product => product.id === selectedProductId) ?? null,
+    [savingsProducts, selectedProductId]
   );
-
-  const filteredProducts = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    return data.filter(product => {
-      const matchesTerm = term === null ? true : product.availableTerms === term;
-      const matchesMonthly =
-        monthlyAmount === null
-          ? true
-          : monthlyAmount > product.minMonthlyAmount && monthlyAmount < product.maxMonthlyAmount;
-
-      return matchesTerm && matchesMonthly;
-    });
-  }, [data, monthlyAmount, term]);
-
-  const recommendedProducts = useMemo(() => {
-    if (!filteredProducts.length) {
-      return [];
-    }
-    return [...filteredProducts].sort((a, b) => b.annualRate - a.annualRate).slice(0, 2);
-  }, [filteredProducts]);
 
   return (
     <>

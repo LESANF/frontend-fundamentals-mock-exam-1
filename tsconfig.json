@@ -27,6 +27,7 @@
     "jsxImportSource": "@emotion/react",
     "paths": {
       "@components/*": ["components/*"],
+      "@constants": ["constants/index.ts"],
       "@constants/*": ["constants/*"],
       "@hooks/*": ["hooks/*"],
       "@utils": ["utils/index.ts"],

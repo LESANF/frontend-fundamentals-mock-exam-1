@@ -1,6 +1,7 @@
 import { colors, ListHeader, ListRow, Border, Spacing } from 'tosslib';
 
 import type { SavingsProduct } from 'api/types';
+import { RATE_PERCENT, SAVINGS_INTEREST_FACTOR, SAVINGS_ROUND_UNIT } from '@constants';
 import { formatCurrency } from '@utils';
 import { ProductList } from './ProductList';
 
@@ -14,8 +15,8 @@ type Props = {
   onSelect: (productId: string) => void;
 };
 
-const roundToThousand = (value: number) => Math.round(value / 1000) * 1000;
-const toRateFactor = (annualRate: number) => 1 + annualRate * 0.5;
+const roundToThousand = (value: number) => Math.round(value / SAVINGS_ROUND_UNIT) * SAVINGS_ROUND_UNIT;
+const toRateFactor = (annualRate: number) => 1 + (annualRate / RATE_PERCENT) * SAVINGS_INTEREST_FACTOR;
 
 export function CalculationResult({
   selectedProduct,
