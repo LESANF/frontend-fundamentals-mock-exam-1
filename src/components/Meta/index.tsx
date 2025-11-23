@@ -6,7 +6,6 @@ interface MetaProps {
 }
 
 const Meta = ({ userName, openGraphImageUrl }: MetaProps) => {
-  console.log('openGraphImageUrl', openGraphImageUrl);
   return (
     <Helmet>
       <title>{`${userName}님의 적금계산기`}</title>
