@@ -1,3 +1,5 @@
+import Header from '@components/Header';
+import Meta from '@components/Meta';
 import {
   Assets,
   Border,
@@ -12,10 +14,12 @@ import {
 } from 'tosslib';
 
 export function SavingsCalculatorPage() {
+  const openGraphImageUrl = new URL(`${import.meta.env.BASE_URL}toss-og-image.png`, window.location.origin).href;
+
   return (
     <>
-      <NavigationBar title="적금 계산기" />
-
+      <Meta userName={'김동한'} openGraphImageUrl={openGraphImageUrl} />
+      <Header title={'적금 계산기'} />
       <Spacing size={16} />
 
       <TextField label="목표 금액" placeholder="목표 금액을 입력하세요" suffix="원" />

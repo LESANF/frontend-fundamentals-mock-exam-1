@@ -1,6 +1,7 @@
 import { GlobalPortal, GlobalStyles } from 'tosslib';
 import { Routes } from './pages/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient();
 
@@ -10,7 +11,9 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <GlobalPortal.Provider>
-          <Routes />
+          <HelmetProvider>
+            <Routes />
+          </HelmetProvider>
         </GlobalPortal.Provider>
       </QueryClientProvider>
     </>
