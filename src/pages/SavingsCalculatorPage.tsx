@@ -1,5 +1,6 @@
 import Header from '@components/Header';
 import Meta from '@components/Meta';
+import { useGetSavingsProducts } from 'api/queries';
 import {
   Assets,
   Border,
@@ -16,6 +17,17 @@ import {
 export function SavingsCalculatorPage() {
   const openGraphImageUrl = new URL(`${import.meta.env.BASE_URL}toss-og-image.png`, window.location.origin).href;
 
+  const { data, isLoading } = useGetSavingsProducts();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <div>No data</div>;
+  }
+
+  console.log(data);
   return (
     <>
       <Meta userName={'김동한'} openGraphImageUrl={openGraphImageUrl} />
